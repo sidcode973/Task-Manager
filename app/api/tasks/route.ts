@@ -55,14 +55,19 @@ export async function POST(request: NextRequest) {
     await connectDB()
     const { title, description, priority } = await request.json()
 
-    if (!title?.trim()) {
+    // ✅ FIX 1: trim first, store the trimmed version
+    const trimmedTitle = title?.trim()
+
+    // ✅ FIX 2: check trimmed value AND enforce minimum length
+    if (!trimmedTitle || trimmedTitle.length < 2) {
       return NextResponse.json<ApiResponse<null>>(
-        { success: false, error: 'Title is required' }, { status: 400 }
+        { success: false, error: 'Title must be at least 2 characters' },
+        { status: 400 }
       )
     }
 
     const task = await Task.create({
-      title: title.trim(),
+      title: trimmedTitle,        // ✅ FIX 3: save clean title, not raw input
       description: description?.trim() || '',
       priority: priority || 'medium',
       userId: payload.userId,
