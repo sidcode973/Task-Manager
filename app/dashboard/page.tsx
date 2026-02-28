@@ -57,6 +57,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
+      <h1 className="text-2xl font-bold text-center py-4">My Workspace</h1>
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="grid grid-cols-4 gap-4 mb-8">
           {(['all', 'todo', 'in-progress', 'done'] as const).map((s) => (
